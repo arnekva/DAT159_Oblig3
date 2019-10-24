@@ -1,5 +1,8 @@
 package no.hvl.dat159;
 
+import no.hvl.dat159.util.EncodingUtil;
+import no.hvl.dat159.util.HashUtil;
+
 /**
  * The basic building block in the blockchain.
  */
@@ -29,8 +32,16 @@ public class Block {
 	 * binary pattern.
 	 */
 	public Block(String prevBlockHash, CoinbaseTx coinbaseTx, Transaction tx) {
-		//TODO
+		//DONE?
 		//Remember to calculate the Merkle root
+		this.prevBlockHash = prevBlockHash;
+		this.coinbaseTx = coinbaseTx;
+		this.transaction = tx;
+		if (this.transaction == null) {
+			merkleRoot = EncodingUtil.bytesToHex(HashUtil.sha256(coinbaseTx.getTxId()));
+		} else {
+			merkleRoot = EncodingUtil.bytesToHex(HashUtil.sha256(coinbaseTx.getTxId() + tx.getTxId()));
+		}
 	}
 	
 	/**
@@ -38,7 +49,11 @@ public class Block {
 	 * requirement is satisfied.
 	 */
 	public void mine() {
-		//TODO
+		//DONE
+		nonce = 0;
+		while(!getBlockHashAsBinaryString().matches(Blockchain.MINING_TARGET)) {
+			nonce++;
+		}
 	}
 	
 	/**
@@ -59,7 +74,13 @@ public class Block {
 	 * the hash puzzle requirement.
 	 */
 	public boolean isValidAsGenesisBlock() {
-		//TODO
+		//DONE
+		if (transaction != null || !prevBlockHash.equals("0") || merkleRoot == null) {
+			return false;
+		}
+		if (!getBlockHashAsBinaryString().matches(Blockchain.MINING_TARGET)) {
+			return false;
+		}
 		return true;
 	}
 	
@@ -68,8 +89,8 @@ public class Block {
 	 * Can be useful in the mining process to see if the hash puzzle is solved.
 	 */
 	public String getBlockHashAsBinaryString() {
-		//TODO
-		return null;
+		//DONE
+		return EncodingUtil.bytesToBinary(HashUtil.sha256(merkleRoot + nonce + prevBlockHash));
 	}
 
 	/**

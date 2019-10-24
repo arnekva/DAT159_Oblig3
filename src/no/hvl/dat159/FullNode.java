@@ -1,5 +1,7 @@
 package no.hvl.dat159;
 
+import no.hvl.dat159.util.DateTimeUtil;
+
 /**
  * Contains both the full Blockchain and the full UtxoMap.
  * Also contains the wallet for the mining rewards + fees.
@@ -23,21 +25,35 @@ public class FullNode {
 	 * adding a genesis block.
 	 */
 	public FullNode(String walletId) {
-		//TODO
+		//DONE?
+		this.wallet = new Wallet(walletId, this);
+		this.blockchain = new Blockchain();
+		this.utxoMap = new UtxoMap();
+		mineAndAddGenesisBlock();
 	}
 
 	/**
 	 * Does what it says.
 	 */
 	public void mineAndAddGenesisBlock() {
-		//TODO
+		//DONE
 		//1. Create the coinbase transaction
-		//2. Add the coinbase transaction to a new block and mine the block
-		//3. Validate the block. If valid:
-			//4. Add the block to the blockchain
-			//5. Update the utxo set
-		//else
-			//up to you
+		CoinbaseTx coinbasetx = new CoinbaseTx(0, DateTimeUtil.getTimestamp() + " - Trump sucks.", wallet.getAddress());
+		if (coinbasetx.isValid()) {
+			//2. Add the coinbase transaction to a new block and mine the block
+			Block genesisBlock = new Block("0", coinbasetx, null);
+			genesisBlock.mine();
+			//3. Validate the block. If valid:
+			if (genesisBlock.isValidAsGenesisBlock()) {
+				//4. Add the block to the blockchain
+				blockchain.setGenesisBlock(genesisBlock);
+				//5. Update the utxo set
+				utxoMap.addOutput(new Input("0", 0), coinbasetx.getOutput());
+			} else {
+				System.out.println("Block is invalid as genesisblock");
+			}
+		}
+		
 	}
 	
 	/**
@@ -75,6 +91,7 @@ public class FullNode {
 		wallet.printOverviewIndented();
 		System.out.println("   Associated blockchain");
 		blockchain.printOverview();
+		wallet.printOverview();
 	}
 	
 }

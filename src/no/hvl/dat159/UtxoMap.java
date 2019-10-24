@@ -33,10 +33,18 @@ public class UtxoMap {
 	 * as a Set of K,V-pairs.
 	 */
 	public Set<Entry<Input, Output>> getUtxosForAddress(String address) {
-		//TODO
-		return null;
+		//DONE?
+		Set<Entry<Input, Output>> allEntries = getAllUtxos();
+		allEntries.removeIf(x -> !x.getValue().getAddress().equals(address));
+		return allEntries;
 	}
 	
+	@Override
+	public String toString() {
+		
+		return "UtxoMap [utxos=" + utxos.toString() + "]";
+	}
+
 	public void addOutput(Input input, Output output) {
 		utxos.put(input, output);
 	}

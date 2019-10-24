@@ -1,0 +1,55 @@
+Class overview:
+
+Fullnode{
+	Blockhain blockchain
+	UtxoMap utxomap
+	Wallet wallet
+}
+
+Blockchain{
+	long block_reward
+	int mining_difficulty
+	String mining_target
+	List<Block> blocks
+}
+
+UtxoMap{
+	HashMap<Input, Output> utxos
+}
+
+Wallet{
+	String id
+	KeyPair keypair
+	FullNode networkNode
+}
+
+Block{
+	String prevBlockHash
+	String merkleRoot
+	long nonce
+	CoinbaseTx coinbasetx
+	Transaction transaction
+}
+
+CoinbaseTx{
+	int blockheight
+	String message
+	Output output
+}
+
+Transaction{
+	List<Input> inputs
+	List<Output> outputs
+	PublicKey senderPublicKey
+	byte[] signature
+}
+
+Input{
+	String prevTxId
+	int prevOutputIndex
+}
+
+Output{
+	long value
+	String address
+}

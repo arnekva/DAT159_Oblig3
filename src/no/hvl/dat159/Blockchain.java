@@ -46,21 +46,27 @@ public class Blockchain {
 	 * This is only allowed if the blockchain is empty.
 	 */
 	public void setGenesisBlock(Block genesisBlock) {
-		//TODO
+		//DONE
+		if (blocks.isEmpty()) {
+			blocks.add(genesisBlock);
+		}
 	}
 	
 	public void appendBlock(Block newBlock) {
-		//TODO
+		//DONE
+		if (!blocks.isEmpty()) {
+			blocks.add(newBlock);
+		}
 	}
 
 	public int getHeight() {
-		//TODO
-		return 0;
+		//DONE
+		return blocks.size();
 	}
 	
 	public String getLastBlockHash() {
-		//TODO
-		return null;
+		//DONE
+		return blocks.get(getHeight()-1).getBlockHashAsHexString();
 	}
 
 	public List<Block> getBlocks() {

@@ -1,5 +1,8 @@
 package no.hvl.dat159;
 
+import no.hvl.dat159.util.EncodingUtil;
+import no.hvl.dat159.util.HashUtil;
+
 /**
  * 
  */
@@ -24,11 +27,18 @@ public class CoinbaseTx {
 	/* --------------------------------------------------------------------- */
 
 	public CoinbaseTx(int blockHeight, String message, String walletAddress) {
-		//TODO
+		//DONE
+		this.blockHeight = blockHeight;
+		this.message = message;
+		this.output = new Output(1000, walletAddress);
+		
 	}
 	
-	public boolean isValid(UtxoMap utxoMap) {
+	public boolean isValid() {
 		//TODO
+		if (blockHeight < 0 || message == null || output == null) {
+			return false;
+		}
 		return true;
 	}
 
@@ -44,8 +54,8 @@ public class CoinbaseTx {
 	 *	The block hash as a hexadecimal String. 
 	 */
 	public String getTxId() {
-		//TODO
-		return null;
+		//DONE
+		return EncodingUtil.bytesToHex(HashUtil.sha256(blockHeight + message));
 	}
 	
 	@Override

@@ -2,6 +2,13 @@ package no.hvl.dat159;
 
 import java.security.KeyPair;
 import java.security.PublicKey;
+import java.util.ArrayList;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import no.hvl.dat159.util.HashUtil;
+import no.hvl.dat159.util.SignatureUtil;
 
 /**
  * A Wallet keeps the keys and creates signed transactions to be
@@ -22,7 +29,10 @@ public class Wallet {
 	 * 
 	 */
 	public Wallet(String id, FullNode node) {
-		//TODO
+		//DONE
+		this.id = id;
+		this.networkNode = node;
+		this.keyPair = SignatureUtil.generateRandomDSAKeyPair();
 	}
 	
 	/**
@@ -50,32 +60,38 @@ public class Wallet {
      * 
      */
 	public PublicKey getPublicKey() {
-		//TODO
-		return null;
+		//DONE
+		return keyPair.getPublic();
     }
 
 	/**
 	 * 
 	 */
     public String getAddress() {
-		//TODO
-		return null;
+		//DONE
+		return HashUtil.pubKeyToAddress(getPublicKey());
     }
     
     /**
      * 
      */
     public long calculateBalance() {
-    	//TODO
-    	return 0;
+    	//DONE
+    	long balance = 0;
+    	ArrayList<Integer> ledger = new ArrayList<Integer>();
+    	Set<Entry<Input, Output>> utxos = networkNode.getUtxoMap().getUtxosForAddress(getAddress());
+    	utxos.forEach(x -> ledger.add((int)x.getValue().getValue()));
+    	balance = ledger.stream().collect(Collectors.summingInt(Integer::intValue));
+    	return balance;
     }
 
     /**
      * 
      */
     public int getNumberOfUtxos() {
-    	//TODO
-    	return 0;
+    	//DONE
+    	Set<Entry<Input, Output>> utxos = networkNode.getUtxoMap().getUtxosForAddress(getAddress());
+    	return utxos.size();
     }
     
 	public void printOverview() {

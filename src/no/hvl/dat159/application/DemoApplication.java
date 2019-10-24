@@ -1,5 +1,7 @@
 package no.hvl.dat159.application;
 
+import no.hvl.dat159.FullNode;
+
 public class DemoApplication {
 	
 	public static void main(String... blablabla) throws Exception {
@@ -9,7 +11,8 @@ public class DemoApplication {
          * monetary transactions. We will use Bitcoin as the basis for the assignment,
          * but there will be a lot of simplifications!
          */
-
+		FullNode fullnode = new FullNode("123456789");
+		fullnode.printOverview();
 		/*
 		 * 1. First, you should create the one and only FullNode.
 		 * 		The full node will create it's internal Wallet, create the 
