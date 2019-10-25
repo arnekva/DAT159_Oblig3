@@ -7,6 +7,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.naming.InsufficientResourcesException;
+
 import no.hvl.dat159.util.HashUtil;
 import no.hvl.dat159.util.SignatureUtil;
 
@@ -39,17 +41,32 @@ public class Wallet {
 	 * 
 	 */
     public Transaction createTransaction(long value, String address) throws Exception {
-    	//TODO
+    	//DONE
         // 1. Calculate the balance
+    	long balance = calculateBalance();
         // 2. Check if there are sufficient funds --- Exception?
+    	if (balance < value) {
+    		throw new InsufficientResourcesException();
+    	}
         // 3. Choose a number of UTXO to be spent - We take ALL 
         //   (= the complete wallet balance)!
+    	Set<Entry<Input, Output>> allUtxos = networkNode.getUtxoMap().getUtxosForAddress(getAddress());
         // 4. Calculate change
+    	long change = balance - value;
         // 5. Create an "empty" transaction
+    	Transaction transaction = new Transaction(getPublicKey());
         // 6. Add chosen inputs (=ALL)
+    	for (Entry<Input, Output> entry : allUtxos) {
+    		transaction.addInput(entry.getKey());
+    	}
         // 7. Add 1 or 2 outputs, depending on change
+    	transaction.addOutput(new Output(value, address));
+    	if (change > 0) {
+    		transaction.addOutput(new Output(change, getAddress()));
+    	}
         // 8. Sign the transaction
-        return null;
+    	transaction.signTxUsing(keyPair.getPrivate());
+        return transaction;
     }
 
     public String getId() {

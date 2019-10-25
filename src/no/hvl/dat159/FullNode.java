@@ -52,6 +52,8 @@ public class FullNode {
 			} else {
 				System.out.println("Block is invalid as genesisblock");
 			}
+		} else {
+			System.out.println("CoinbaseTx is invalid");
 		}
 		
 	}
@@ -60,15 +62,33 @@ public class FullNode {
 	 * Does what it says.
 	 */
 	public void mineAndAppendBlockContaining(Transaction tx) {
-		//TODO
+		//DONE?
 		//1. Create the coinbase transaction
-		//2. Add the two transactions to a new block and mine the block
-		//3. Validate the block. If valid:
-			//4. Add the block to the blockchain
-			//5. Update the utxo set with the new coinbaseTx
-			//6. Update the utxo set with the new tx
-		//else
-			//up to you
+		CoinbaseTx coinbasetx = new CoinbaseTx(blockchain.getHeight(), DateTimeUtil.getTimestamp() + " by " + wallet.getId(), wallet.getAddress());
+		if (coinbasetx.isValid()) {
+			//2. Add the two transactions to a new block and mine the block
+			Block newBlock = new Block(blockchain.getLastBlockHash(), coinbasetx, tx);
+			//3. Validate the block. If valid:
+			newBlock.mine();
+			if (newBlock.isValid()) {
+				//4. Add the block to the blockchain
+				blockchain.appendBlock(newBlock);
+				//5. Update the utxo set with the new coinbaseTx
+				utxoMap.addOutput(new Input("0", coinbasetx.getBlockHeight()), coinbasetx.getOutput());
+				//6. Update the utxo set with the new tx
+				for (Input i : tx.getInputs()) {
+					utxoMap.removeOutput(i);
+				}
+				for (int i = 0; i<tx.getOutputs().size(); i++) {
+					utxoMap.addOutput(new Input(tx.getTxId(), i), tx.getOutputs().get(i));
+				}
+			} else {
+				System.out.println("Block is invalid as new block");
+			}
+		} else {
+			System.out.println("CoinbaseTx is invalid");
+		}
+		
 	}
 
 	public Blockchain getBlockchain() {

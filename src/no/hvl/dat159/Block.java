@@ -62,7 +62,13 @@ public class Block {
 	 * the hash puzzle requirement.
 	 */
 	public boolean isValid() {
-		//TODO
+		//DONE
+		if (transaction == null || prevBlockHash == null || prevBlockHash.isEmpty() || merkleRoot == null) {
+			return false;
+		}
+		if (!getBlockHashAsBinaryString().matches(Blockchain.MINING_TARGET)) {
+			return false;
+		}
 		return true;
 	}
 	
@@ -97,8 +103,8 @@ public class Block {
 	 * Calculates and encodes the block hash as a hexadecimal String.
 	 */
 	public String getBlockHashAsHexString() {
-		//TODO
-		return null;
+		//DONE
+		return EncodingUtil.bytesToHex(HashUtil.sha256(merkleRoot + nonce + prevBlockHash));
 	}
 	
 	public void printOverview() {

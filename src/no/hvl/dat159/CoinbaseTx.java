@@ -35,7 +35,7 @@ public class CoinbaseTx {
 	}
 	
 	public boolean isValid() {
-		//TODO
+		//DONE
 		if (blockHeight < 0 || message == null || output == null) {
 			return false;
 		}
@@ -48,6 +48,10 @@ public class CoinbaseTx {
 
 	public Output getOutput() {
 		return output;
+	}
+
+	public int getBlockHeight() {
+		return blockHeight;
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package no.hvl.dat159;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -35,8 +36,13 @@ public class UtxoMap {
 	public Set<Entry<Input, Output>> getUtxosForAddress(String address) {
 		//DONE?
 		Set<Entry<Input, Output>> allEntries = getAllUtxos();
-		allEntries.removeIf(x -> !x.getValue().getAddress().equals(address));
-		return allEntries;
+		Set<Entry<Input, Output>> utxosForAddress = new HashSet<>();
+		for (Entry<Input, Output> entry : allEntries) {
+			if (entry.getValue().getAddress().equals(address)) {
+				utxosForAddress.add(entry);
+			}
+		}
+		return utxosForAddress;
 	}
 	
 	@Override

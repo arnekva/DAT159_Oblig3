@@ -1,6 +1,8 @@
 package no.hvl.dat159.application;
 
 import no.hvl.dat159.FullNode;
+import no.hvl.dat159.Transaction;
+import no.hvl.dat159.Wallet;
 
 public class DemoApplication {
 	
@@ -11,22 +13,24 @@ public class DemoApplication {
          * monetary transactions. We will use Bitcoin as the basis for the assignment,
          * but there will be a lot of simplifications!
          */
-		FullNode fullnode = new FullNode("123456789");
-		fullnode.printOverview();
+		
 		/*
 		 * 1. First, you should create the one and only FullNode.
 		 * 		The full node will create it's internal Wallet, create the 
 		 *      (centralized) Blockchain and UtxoMap, mine the genesis Block 
 		 *      and add it to the blockchain (and update the UtxoMap).
 		 */
-    	//TODO
-		
+    	//DONE
+		FullNode fullnode = new FullNode("Sven-Olai");
+		fullnode.printOverview();
 		/*
 		 * 2. Next, you should create two additional wallets and reference
 		 * 		the three wallets from three variables.
 		 */
-    	//TODO
-		
+    	//DONE
+		Wallet LPwallet = new Wallet("Lars-Petter", fullnode);
+		Wallet TOwallet = new Wallet("Tosin", fullnode);
+		Wallet SOwallet = fullnode.getWallet();
 		/*
 		 * 3. Next, you should create a Transaction to transfer some money
 		 * 		from the miner's (full node's) wallet address to one of the 
@@ -34,8 +38,16 @@ public class DemoApplication {
 		 * 		transaction, validate the transaction, mine a new block and 
 		 * 		append it to the blockchain.
 		 */
-    	//TODO
-
+    	//DONE
+		Transaction tx = SOwallet.createTransaction(500, LPwallet.getAddress());
+		fullnode.mineAndAppendBlockContaining(tx);
+		
+		LPwallet.printOverview();
+		
+		SOwallet.printOverview();
+		
+		TOwallet.printOverview();
+		
 		/*
 		 * 4. Repeat the above (transfer some money from one wallet address
 		 * 		to another and record this in the blockchain ledger). 
