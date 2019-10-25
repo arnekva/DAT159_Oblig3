@@ -49,7 +49,7 @@ public class Transaction {
 	 * 
 	 */
 	public boolean isValid(UtxoMap utxoMap) {
-	    //TODONE
+	    //DONE
 	    //None of the data must be null 
 		if (senderPublicKey == null || signature  == null) {
 			return false;
@@ -96,7 +96,6 @@ public class Transaction {
 		if (!SignatureUtil.verifyWithDSA(senderPublicKey, message, signature)) {
 			return false;
 		}
-        //The transaction hash must be correct - it is!
 	    return true;
 	}
 	

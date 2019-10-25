@@ -25,7 +25,7 @@ public class FullNode {
 	 * adding a genesis block.
 	 */
 	public FullNode(String walletId) {
-		//DONE?
+		//DONE
 		this.wallet = new Wallet(walletId, this);
 		this.blockchain = new Blockchain();
 		this.utxoMap = new UtxoMap();
@@ -62,7 +62,7 @@ public class FullNode {
 	 * Does what it says.
 	 */
 	public void mineAndAppendBlockContaining(Transaction tx) {
-		//DONE?
+		//DONE
 		//1. Create the coinbase transaction
 		CoinbaseTx coinbasetx = new CoinbaseTx(blockchain.getHeight(), DateTimeUtil.getTimestamp() + " by " + wallet.getId(), wallet.getAddress());
 		if (coinbasetx.isValid()) {

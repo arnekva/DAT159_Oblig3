@@ -27,7 +27,6 @@ public class DemoApplication {
 		 */
     	//DONE
 		FullNode fullnode = new FullNode("Sven-Olai");
-		fullnode.printOverview();
 		/*
 		 * 2. Next, you should create two additional wallets and reference
 		 * 		the three wallets from three variables.
@@ -46,9 +45,7 @@ public class DemoApplication {
     	//DONE
 		Transaction tx = SOwallet.createTransaction(500, LPwallet.getAddress());
 		fullnode.mineAndAppendBlockContaining(tx);
-		LPwallet.printOverview();
-		SOwallet.printOverview();
-		TOwallet.printOverview();
+
 		
 		/*
 		 * 4. Repeat the above (transfer some money from one wallet address
@@ -57,9 +54,7 @@ public class DemoApplication {
     	//DONE
 		Transaction tx2 = LPwallet.createTransaction(300, TOwallet.getAddress());
 		fullnode.mineAndAppendBlockContaining(tx2);
-		LPwallet.printOverview();
-		SOwallet.printOverview();
-		TOwallet.printOverview();
+
 		/*
 		 * 5. Repeat the above (transfer some money from one wallet address
 		 * 		to another and record this in the blockchain ledger). 
@@ -67,28 +62,27 @@ public class DemoApplication {
     	//DONE
 		Transaction tx3 = SOwallet.createTransaction(1200, LPwallet.getAddress());
 		fullnode.mineAndAppendBlockContaining(tx3);
-		LPwallet.printOverview();
-		SOwallet.printOverview();
-		TOwallet.printOverview();
 		
 		Transaction txFail;
 		try {
+			System.out.println("Testing a transaction with insufficient funds:\n");
 			txFail = SOwallet.createTransaction(3200, LPwallet.getAddress());
 			fullnode.mineAndAppendBlockContaining(txFail);
 		} catch (InsufficientResourcesException e) {
-			System.out.println("\n----------Insufficient funds.----------");
+			System.out.println("\n----------Insufficient funds.----------\n\n");
 		}
 		
-		LPwallet.printOverview();
-		SOwallet.printOverview();
-		TOwallet.printOverview();
+		
 		/*
 		 * 6. Now, it is time to look at the finished result. Print out:
 		 * 		- An overview of the full node
 		 * 		- An overview of each of the three wallets
 		 * 		- An overview of each of the four blocks in the blockchain
 		 */
-    	//TODO
+    	//DONE
+		fullnode.printOverview();
+		LPwallet.printOverview();
+		TOwallet.printOverview();
 		List<Block> blocks = fullnode.getBlockchain().getBlocks();
 		blocks.forEach(x -> x.printOverview());
 	}

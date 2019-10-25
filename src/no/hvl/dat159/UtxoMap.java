@@ -34,7 +34,7 @@ public class UtxoMap {
 	 * as a Set of K,V-pairs.
 	 */
 	public Set<Entry<Input, Output>> getUtxosForAddress(String address) {
-		//DONE?
+		//DONE
 		Set<Entry<Input, Output>> allEntries = getAllUtxos();
 		Set<Entry<Input, Output>> utxosForAddress = new HashSet<>();
 		for (Entry<Input, Output> entry : allEntries) {

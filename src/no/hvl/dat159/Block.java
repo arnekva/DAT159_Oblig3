@@ -32,7 +32,7 @@ public class Block {
 	 * binary pattern.
 	 */
 	public Block(String prevBlockHash, CoinbaseTx coinbaseTx, Transaction tx) {
-		//DONE?
+		//DONE
 		//Remember to calculate the Merkle root
 		this.prevBlockHash = prevBlockHash;
 		this.coinbaseTx = coinbaseTx;
