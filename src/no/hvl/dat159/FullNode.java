@@ -48,7 +48,7 @@ public class FullNode {
 				//4. Add the block to the blockchain
 				blockchain.setGenesisBlock(genesisBlock);
 				//5. Update the utxo set
-				utxoMap.addOutput(new Input("0", 0), coinbasetx.getOutput());
+				utxoMap.addOutput(new Input(coinbasetx.getTxId(), 0), coinbasetx.getOutput());
 			} else {
 				System.out.println("Block is invalid as genesisblock");
 			}
@@ -74,7 +74,7 @@ public class FullNode {
 				//4. Add the block to the blockchain
 				blockchain.appendBlock(newBlock);
 				//5. Update the utxo set with the new coinbaseTx
-				utxoMap.addOutput(new Input("0", coinbasetx.getBlockHeight()), coinbasetx.getOutput());
+				utxoMap.addOutput(new Input(coinbasetx.getTxId(), 0), coinbasetx.getOutput());
 				//6. Update the utxo set with the new tx
 				for (Input i : tx.getInputs()) {
 					utxoMap.removeOutput(i);

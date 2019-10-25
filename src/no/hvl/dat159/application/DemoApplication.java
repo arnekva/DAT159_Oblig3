@@ -1,5 +1,10 @@
 package no.hvl.dat159.application;
 
+import java.util.List;
+
+import javax.naming.InsufficientResourcesException;
+
+import no.hvl.dat159.Block;
 import no.hvl.dat159.FullNode;
 import no.hvl.dat159.Transaction;
 import no.hvl.dat159.Wallet;
@@ -41,25 +46,42 @@ public class DemoApplication {
     	//DONE
 		Transaction tx = SOwallet.createTransaction(500, LPwallet.getAddress());
 		fullnode.mineAndAppendBlockContaining(tx);
-		
 		LPwallet.printOverview();
-		
 		SOwallet.printOverview();
-		
 		TOwallet.printOverview();
 		
 		/*
 		 * 4. Repeat the above (transfer some money from one wallet address
 		 * 		to another and record this in the blockchain ledger). 
 		 */
-    	//TODO
-		
+    	//DONE
+		Transaction tx2 = LPwallet.createTransaction(300, TOwallet.getAddress());
+		fullnode.mineAndAppendBlockContaining(tx2);
+		LPwallet.printOverview();
+		SOwallet.printOverview();
+		TOwallet.printOverview();
 		/*
 		 * 5. Repeat the above (transfer some money from one wallet address
 		 * 		to another and record this in the blockchain ledger). 
 		 */
-    	//TODO
-
+    	//DONE
+		Transaction tx3 = SOwallet.createTransaction(1200, LPwallet.getAddress());
+		fullnode.mineAndAppendBlockContaining(tx3);
+		LPwallet.printOverview();
+		SOwallet.printOverview();
+		TOwallet.printOverview();
+		
+		Transaction txFail;
+		try {
+			txFail = SOwallet.createTransaction(3200, LPwallet.getAddress());
+			fullnode.mineAndAppendBlockContaining(txFail);
+		} catch (InsufficientResourcesException e) {
+			System.out.println("\n----------Insufficient funds.----------");
+		}
+		
+		LPwallet.printOverview();
+		SOwallet.printOverview();
+		TOwallet.printOverview();
 		/*
 		 * 6. Now, it is time to look at the finished result. Print out:
 		 * 		- An overview of the full node
@@ -67,6 +89,8 @@ public class DemoApplication {
 		 * 		- An overview of each of the four blocks in the blockchain
 		 */
     	//TODO
+		List<Block> blocks = fullnode.getBlockchain().getBlocks();
+		blocks.forEach(x -> x.printOverview());
 	}
 	
 }
